@@ -1,11 +1,170 @@
-'use client'
-import { useMemo,useState } from 'react'
-import { Search,SlidersHorizontal,X } from 'lucide-react'
-import { ProductCard } from '@/components/product-card'
-import { SiteFooter } from '@/components/site-footer'
-import { SiteHeader } from '@/components/site-header'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Select,SelectContent,SelectGroup,SelectItem,SelectTrigger,SelectValue } from '@/components/ui/select'
-import { categories,products } from '@/lib/data'
-export default function ProductsPage(){const [query,setQuery]=useState('');const [category,setCategory]=useState('Todos');const [sort,setSort]=useState('featured');const filtered=useMemo(()=>products.filter(p=>(category==='Todos'||p.category===category)&&`${p.name} ${p.brand} ${p.code}`.toLowerCase().includes(query.toLowerCase())).sort((a,b)=>sort==='low'?a.price-b.price:sort==='high'?b.price-a.price:Number(b.featured)-Number(a.featured)),[query,category,sort]);const clear=()=>{setQuery('');setCategory('Todos')};return <><SiteHeader/><main><section className="bg-brand-navy px-5 py-16 text-center text-brand-cream"><p className="text-xs font-semibold uppercase tracking-[.3em] text-primary">Catálogo Lu An</p><h1 className="mt-3 font-serif text-5xl">Pequeñas cosas, grandes detalles</h1><p className="mx-auto mt-4 max-w-xl leading-relaxed text-brand-cream/65">Explorá bazar, organización, textiles y objetos para regalar o disfrutar en casa.</p></section><section className="mx-auto max-w-7xl px-5 py-10 lg:px-8"><div className="flex flex-col gap-5 border-b pb-7"><div className="flex flex-col gap-3 md:flex-row"><label className="relative flex-1"><span className="sr-only">Buscar productos</span><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/><Input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar producto, marca o código..." className="pl-9"/></label><Select value={sort} onValueChange={value=>value&&setSort(value)}><SelectTrigger className="w-full md:w-52"><SelectValue/></SelectTrigger><SelectContent><SelectGroup><SelectItem value="featured">Destacados</SelectItem><SelectItem value="low">Menor precio</SelectItem><SelectItem value="high">Mayor precio</SelectItem></SelectGroup></SelectContent></Select></div><div className="flex flex-wrap gap-2" aria-label="Categorías">{['Todos',...categories].map(c=><Button key={c} variant={category===c?'default':'outline'} size="sm" onClick={()=>setCategory(c)}>{c}</Button>)}</div></div><div className="my-6 flex items-center justify-between"><p className="text-sm text-muted-foreground"><SlidersHorizontal className="mr-2 inline size-4"/>{filtered.length} productos</p>{(query||category!=='Todos')&&<Button variant="ghost" size="sm" onClick={clear}><X data-icon="inline-start"/>Limpiar</Button>}</div>{filtered.length?<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{filtered.map(p=><ProductCard key={p.id} product={p}/>)}</div>:<div className="rounded-xl border border-dashed p-12 text-center"><h2 className="font-serif text-2xl">No encontramos resultados</h2><p className="mt-2 text-sm text-muted-foreground">Probá otra búsqueda o limpiá los filtros.</p><Button className="mt-5" onClick={clear}>Ver todo</Button></div>}</section></main><SiteFooter/></>}
+"use client";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories, products } from "@/lib/data";
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<CatalogLoading />}>
+      <ProductsCatalog />
+    </Suspense>
+  );
+}
+
+function ProductsCatalog() {
+  const searchParams = useSearchParams();
+  const requestedCategory = searchParams.get("categoria") ?? "Todos";
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const [category, setCategory] = useState(() =>
+    categories.includes(requestedCategory) ? requestedCategory : "Todos",
+  );
+  const [sort, setSort] = useState("featured");
+  const filtered = useMemo(
+    () =>
+      products
+        .filter(
+          (p) =>
+            (category === "Todos" || p.category === category) &&
+            `${p.name} ${p.category} ${p.brand} ${p.code} ${p.description} ${p.features.join(" ")}`
+              .toLowerCase()
+              .includes(query.toLowerCase()),
+        )
+        .sort((a, b) =>
+          sort === "low"
+            ? a.price - b.price
+            : sort === "high"
+              ? b.price - a.price
+              : Number(b.featured) - Number(a.featured),
+        ),
+    [query, category, sort],
+  );
+  const clear = () => {
+    setQuery("");
+    setCategory("Todos");
+  };
+  return (
+    <>
+      <SiteHeader />
+      <main>
+        <section className="bg-brand-navy px-5 py-16 text-center text-brand-cream">
+          <p className="text-xs font-semibold uppercase tracking-[.3em] text-primary">
+            Catálogo Lu An
+          </p>
+          <h1 className="mt-3 font-serif text-5xl">
+            Pequeñas cosas, grandes detalles
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-brand-cream/65">
+            Explorá bazar, organización, textiles y objetos para regalar o
+            disfrutar en casa.
+          </p>
+        </section>
+        <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+          <div className="flex flex-col gap-5 border-b pb-7">
+            <div className="flex flex-col gap-3 md:flex-row">
+              <label className="relative flex-1">
+                <span className="sr-only">Buscar productos</span>
+                <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar producto, marca o código..."
+                  className="pl-9"
+                />
+              </label>
+              <Select
+                value={sort}
+                onValueChange={(value) => value && setSort(value)}
+              >
+                <SelectTrigger className="w-full md:w-52">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="featured">Destacados</SelectItem>
+                    <SelectItem value="low">Menor precio</SelectItem>
+                    <SelectItem value="high">Mayor precio</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-wrap gap-2" aria-label="Categorías">
+              {["Todos", ...categories].map((c) => (
+                <Button
+                  key={c}
+                  variant={category === c ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCategory(c)}
+                >
+                  {c}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="my-6 flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              <SlidersHorizontal className="mr-2 inline size-4" />
+              {filtered.length} productos
+            </p>
+            {(query || category !== "Todos") && (
+              <Button variant="ghost" size="sm" onClick={clear}>
+                <X data-icon="inline-start" />
+                Limpiar
+              </Button>
+            )}
+          </div>
+          {filtered.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-dashed p-12 text-center">
+              <h2 className="font-serif text-2xl">No encontramos resultados</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Probá otra búsqueda o limpiá los filtros.
+              </p>
+              <Button className="mt-5" onClick={clear}>
+                Ver todo
+              </Button>
+            </div>
+          )}
+        </section>
+      </main>
+      <SiteFooter />
+    </>
+  );
+}
+
+function CatalogLoading() {
+  return (
+    <>
+      <SiteHeader />
+      <main className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+        <div className="h-12 w-72 animate-pulse rounded-lg bg-secondary" />
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }, (_, index) => (
+            <div
+              key={index}
+              className="aspect-[4/3] animate-pulse rounded-xl bg-secondary"
+            />
+          ))}
+        </div>
+      </main>
+      <SiteFooter />
+    </>
+  );
+}

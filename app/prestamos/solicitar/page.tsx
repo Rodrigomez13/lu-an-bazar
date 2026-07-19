@@ -1,2 +1,2 @@
-import { redirect } from 'next/navigation'
-export default function ApplyPage(){redirect('/ingresar')}
+import { notFound } from 'next/navigation'
+export default function ApplyPage(){notFound()}

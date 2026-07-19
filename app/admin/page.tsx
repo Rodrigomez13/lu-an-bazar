@@ -1,17 +1,418 @@
-'use client'
-import { useState } from 'react'
-import { AlertTriangle,Boxes,Building2,CircleDollarSign,Download,FileClock,LayoutDashboard,LockKeyhole,PackageSearch,ReceiptText,Search,Settings,ShieldCheck,Users } from 'lucide-react'
-import { toast } from 'sonner'
-import { Area,AreaChart,CartesianGrid,XAxis } from 'recharts'
-import { Brand } from '@/components/brand'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card,CardContent,CardHeader,CardTitle } from '@/components/ui/card'
-import { ChartContainer,ChartTooltip,ChartTooltipContent } from '@/components/ui/chart'
-import { Input } from '@/components/ui/input'
-import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow } from '@/components/ui/table'
-import { Tabs,TabsContent,TabsList,TabsTrigger } from '@/components/ui/tabs'
-import { bazarStats,formatARS,loanClients,loanStats,products,salesData } from '@/lib/data'
-const groups=[{title:'Bazar',items:[[LayoutDashboard,'Resumen comercial','bazar'],[Boxes,'Productos','productos'],[PackageSearch,'Inventario','inventario'],[Users,'Clientes del bazar','clientes-bazar']]},{title:'Préstamos personales',items:[[CircleDollarSign,'Panel financiero','prestamos'],[Users,'Clientes privados','clientes-prestamos'],[ReceiptText,'Cuotas y cobros','cobros'],[AlertTriangle,'Mora y recordatorios','mora']]},{title:'Sistema',items:[[ShieldCheck,'Usuarios y roles','usuarios'],[FileClock,'Auditoría','auditoria'],[Settings,'Configuración','configuracion']]}]
-function StatGrid({items}:{items:{label:string;value:number;note:string}[]}){return <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{items.map(item=><Card key={item.label}><CardContent className="pt-6"><p className="text-sm text-muted-foreground">{item.label}</p><p className="mt-2 font-serif text-3xl">{typeof item.value==='number'&&item.value>10000?formatARS(item.value):item.value}</p><p className="mt-2 text-xs text-accent">{item.note}</p></CardContent></Card>)}</div>}
-export default function Admin(){const [section,setSection]=useState('bazar');const privateMode=['prestamos','clientes-prestamos','cobros','mora'].includes(section);return <main className="min-h-screen bg-secondary/40"><header className="border-b bg-brand-navy text-brand-cream"><div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 lg:px-8"><Brand/><div className="flex items-center gap-3"><Badge variant="secondary"><LockKeyhole className="mr-1 size-3"/>Área privada</Badge><Button variant="outline" size="sm" className="border-brand-cream/20 bg-transparent text-brand-cream" onClick={()=>toast.success('Sesión cerrada en modo demo')}>Salir</Button></div></div></header><div className="mx-auto flex max-w-[1500px]"><aside className="hidden min-h-[calc(100vh-5rem)] w-72 shrink-0 border-r bg-brand-navy p-4 text-brand-cream lg:block">{groups.map(group=><div key={group.title} className="mb-6"><p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.22em] text-primary">{group.title}</p><nav className="flex flex-col gap-1">{group.items.map(([Icon,label,value])=>{const I=Icon as typeof LayoutDashboard;return <Button key={value as string} onClick={()=>setSection(value as string)} variant="ghost" className={`justify-start ${section===value?'bg-brand-cream/10 text-brand-cream':'text-brand-cream/65 hover:bg-brand-cream/10 hover:text-brand-cream'}`}><I data-icon="inline-start"/>{label as string}</Button>})}</nav></div>)}</aside><section className="min-w-0 flex-1 px-5 py-8 lg:px-8"><div className="mb-6 flex gap-2 overflow-x-auto lg:hidden">{groups.flatMap(g=>g.items).map(([Icon,label,value])=><Button key={value as string} size="sm" variant={section===value?'default':'outline'} onClick={()=>setSection(value as string)}>{label as string}</Button>)}</div><div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><div className="flex items-center gap-2"><p className="text-xs font-semibold uppercase tracking-[.24em] text-primary">Administración</p>{privateMode&&<Badge variant="destructive">Información confidencial</Badge>}</div><h1 className="mt-2 font-serif text-4xl">{privateMode?'Préstamos personales':section==='bazar'?'Resumen del bazar':groups.flatMap(g=>g.items).find(i=>i[2]===section)?.[1] as string}</h1><p className="mt-2 text-sm text-muted-foreground">{privateMode?'Actividad independiente · acceso restringido por rol':'Operación comercial de Lu An Bazar'}</p></div><Button variant="outline" onClick={()=>toast.success('Reporte preparado para descargar')}><Download data-icon="inline-start"/>Exportar</Button></div>{section==='bazar'&&<><StatGrid items={bazarStats}/><div className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_.55fr]"><Card><CardHeader><CardTitle className="font-serif text-2xl">Ventas mensuales</CardTitle></CardHeader><CardContent><ChartContainer config={{total:{label:'Ventas',color:'var(--chart-1)'}}} className="h-72 w-full"><AreaChart data={salesData}><defs><linearGradient id="sales" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="var(--color-total)" stopOpacity={.35}/><stop offset="95%" stopColor="var(--color-total)" stopOpacity={0}/></linearGradient></defs><CartesianGrid vertical={false}/><XAxis dataKey="month" tickLine={false} axisLine={false}/><ChartTooltip content={<ChartTooltipContent/>}/><Area dataKey="total" type="monotone" stroke="var(--color-total)" fill="url(#sales)"/></AreaChart></ChartContainer></CardContent></Card><Card><CardHeader><CardTitle className="font-serif text-2xl">Atención pendiente</CardTitle></CardHeader><CardContent className="flex flex-col gap-3">{['5 consultas de WhatsApp','7 productos con stock bajo','3 reservas por confirmar'].map(x=><div key={x} className="rounded-lg bg-secondary p-3 text-sm">{x}</div>)}</CardContent></Card></div></>}{['productos','inventario','clientes-bazar'].includes(section)&&<Card><CardHeader><CardTitle className="font-serif text-2xl">Gestión comercial</CardTitle><div className="relative mt-2"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/><Input className="pl-9" placeholder="Buscar en el bazar..."/></div></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Código</TableHead><TableHead>Producto</TableHead><TableHead>Categoría</TableHead><TableHead>Stock</TableHead><TableHead>Precio</TableHead></TableRow></TableHeader><TableBody>{products.slice(0,6).map(p=><TableRow key={p.id}><TableCell>{p.code}</TableCell><TableCell className="font-medium">{p.name}</TableCell><TableCell>{p.category}</TableCell><TableCell><Badge variant={p.stock<6?'destructive':'secondary'}>{p.stock}</Badge></TableCell><TableCell>{formatARS(p.price)}</TableCell></TableRow>)}</TableBody></Table></CardContent></Card>}{privateMode&&<><div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm"><strong>Actividad privada e independiente.</strong> Esta información no se vincula con el catálogo comercial ni es visible para clientes del bazar.</div><StatGrid items={loanStats}/><Card className="mt-6"><CardHeader><CardTitle className="font-serif text-2xl">Clientes de préstamos</CardTitle><p className="text-sm text-muted-foreground">Identidad protegida y acceso auditado.</p></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Legajo</TableHead><TableHead>Cliente</TableHead><TableHead>DNI</TableHead><TableHead>Saldo</TableHead><TableHead>Estado</TableHead></TableRow></TableHeader><TableBody>{loanClients.map(c=><TableRow key={c.id}><TableCell>{c.id}</TableCell><TableCell className="font-medium">{c.name}</TableCell><TableCell>{c.dni}</TableCell><TableCell>{formatARS(c.balance)}</TableCell><TableCell><Badge variant={c.status==='En mora'?'destructive':'secondary'}>{c.status}</Badge></TableCell></TableRow>)}</TableBody></Table></CardContent></Card></>}{['usuarios','auditoria','configuracion'].includes(section)&&<Card><CardHeader><CardTitle className="flex items-center gap-2 font-serif text-2xl"><Building2 className="size-5"/>Control del sistema</CardTitle></CardHeader><CardContent><Tabs defaultValue="roles"><TabsList><TabsTrigger value="roles">Roles</TabsTrigger><TabsTrigger value="activity">Actividad</TabsTrigger></TabsList><TabsContent value="roles" className="pt-4"><p className="text-sm text-muted-foreground">Los permisos comerciales y financieros se administran por separado. Solo el rol Finanzas puede acceder a préstamos personales.</p></TabsContent><TabsContent value="activity" className="pt-4"><p className="text-sm text-muted-foreground">Último acceso financiero: hoy 09:42 · usuario admin.finanzas</p></TabsContent></Tabs></CardContent></Card>}</section></div></main>}
+"use client";
+import { useState } from "react";
+import {
+  AlertTriangle,
+  Boxes,
+  Building2,
+  CircleDollarSign,
+  Download,
+  FileClock,
+  LayoutDashboard,
+  LockKeyhole,
+  PackageSearch,
+  ReceiptText,
+  Search,
+  Settings,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
+import { toast } from "sonner";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Brand } from "@/components/brand";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  bazarStats,
+  formatARS,
+  loanClients,
+  loanStats,
+  products,
+  salesData,
+} from "@/lib/data";
+import { logoutAdmin } from "@/app/ingresar/actions";
+const groups = [
+  {
+    title: "Bazar",
+    items: [
+      [LayoutDashboard, "Resumen comercial", "bazar"],
+      [Boxes, "Productos", "productos"],
+      [PackageSearch, "Inventario", "inventario"],
+      [Users, "Clientes del bazar", "clientes-bazar"],
+    ],
+  },
+  {
+    title: "Préstamos personales",
+    items: [
+      [CircleDollarSign, "Panel financiero", "prestamos"],
+      [Users, "Clientes privados", "clientes-prestamos"],
+      [ReceiptText, "Cuotas y cobros", "cobros"],
+      [AlertTriangle, "Mora y recordatorios", "mora"],
+    ],
+  },
+  {
+    title: "Sistema",
+    items: [
+      [ShieldCheck, "Usuarios y roles", "usuarios"],
+      [FileClock, "Auditoría", "auditoria"],
+      [Settings, "Configuración", "configuracion"],
+    ],
+  },
+];
+function StatGrid({
+  items,
+}: {
+  items: { label: string; value: number; note: string }[];
+}) {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {items.map((item) => (
+        <Card key={item.label}>
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">{item.label}</p>
+            <p className="mt-2 font-serif text-3xl">
+              {typeof item.value === "number" && item.value > 10000
+                ? formatARS(item.value)
+                : item.value}
+            </p>
+            <p className="mt-2 text-xs text-accent">{item.note}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+export default function Admin() {
+  const [section, setSection] = useState("bazar");
+  const privateMode = [
+    "prestamos",
+    "clientes-prestamos",
+    "cobros",
+    "mora",
+  ].includes(section);
+  return (
+    <main className="min-h-screen bg-secondary/40">
+      <header className="border-b bg-brand-navy text-brand-cream">
+        <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 lg:px-8">
+          <Brand />
+          <div className="flex items-center gap-3">
+            <Badge variant="secondary">
+              <LockKeyhole className="mr-1 size-3" />
+              Área privada
+            </Badge>
+            <form action={logoutAdmin}>
+              <Button
+                type="submit"
+                variant="outline"
+                size="sm"
+                className="border-brand-cream/20 bg-transparent text-brand-cream"
+              >
+                Salir
+              </Button>
+            </form>
+          </div>
+        </div>
+      </header>
+      <div className="mx-auto flex max-w-[1500px]">
+        <aside className="hidden min-h-[calc(100vh-5rem)] w-72 shrink-0 border-r bg-brand-navy p-4 text-brand-cream lg:block">
+          {groups.map((group) => (
+            <div key={group.title} className="mb-6">
+              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.22em] text-primary">
+                {group.title}
+              </p>
+              <nav className="flex flex-col gap-1">
+                {group.items.map(([Icon, label, value]) => {
+                  const I = Icon as typeof LayoutDashboard;
+                  return (
+                    <Button
+                      key={value as string}
+                      onClick={() => setSection(value as string)}
+                      variant="ghost"
+                      className={`justify-start ${section === value ? "bg-brand-cream/10 text-brand-cream" : "text-brand-cream/65 hover:bg-brand-cream/10 hover:text-brand-cream"}`}
+                    >
+                      <I data-icon="inline-start" />
+                      {label as string}
+                    </Button>
+                  );
+                })}
+              </nav>
+            </div>
+          ))}
+        </aside>
+        <section className="min-w-0 flex-1 px-5 py-8 lg:px-8">
+          <div className="mb-6 flex gap-2 overflow-x-auto lg:hidden">
+            {groups
+              .flatMap((g) => g.items)
+              .map(([, label, value]) => (
+                <Button
+                  key={value as string}
+                  size="sm"
+                  variant={section === value ? "default" : "outline"}
+                  onClick={() => setSection(value as string)}
+                >
+                  {label as string}
+                </Button>
+              ))}
+          </div>
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-semibold uppercase tracking-[.24em] text-primary">
+                  Administración
+                </p>
+                {privateMode && (
+                  <Badge variant="destructive">Información confidencial</Badge>
+                )}
+              </div>
+              <h1 className="mt-2 font-serif text-4xl">
+                {privateMode
+                  ? "Préstamos personales"
+                  : section === "bazar"
+                    ? "Resumen del bazar"
+                    : (groups
+                        .flatMap((g) => g.items)
+                        .find((i) => i[2] === section)?.[1] as string)}
+              </h1>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {privateMode
+                  ? "Actividad independiente · acceso restringido por rol"
+                  : "Operación comercial de Lu An Bazar"}
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => toast.success("Reporte preparado para descargar")}
+            >
+              <Download data-icon="inline-start" />
+              Exportar
+            </Button>
+          </div>
+          {section === "bazar" && (
+            <>
+              <StatGrid items={bazarStats} />
+              <div className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_.55fr]">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="font-serif text-2xl">
+                      Ventas mensuales
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ChartContainer
+                      config={{
+                        total: { label: "Ventas", color: "var(--chart-1)" },
+                      }}
+                      className="h-72 w-full"
+                    >
+                      <AreaChart data={salesData}>
+                        <defs>
+                          <linearGradient
+                            id="sales"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="var(--color-total)"
+                              stopOpacity={0.35}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="var(--color-total)"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                          dataKey="month"
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Area
+                          dataKey="total"
+                          type="monotone"
+                          stroke="var(--color-total)"
+                          fill="url(#sales)"
+                        />
+                      </AreaChart>
+                    </ChartContainer>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="font-serif text-2xl">
+                      Atención pendiente
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-3">
+                    {[
+                      "5 consultas de WhatsApp",
+                      "7 productos con stock bajo",
+                      "3 reservas por confirmar",
+                    ].map((x) => (
+                      <div
+                        key={x}
+                        className="rounded-lg bg-secondary p-3 text-sm"
+                      >
+                        {x}
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          )}
+          {["productos", "inventario", "clientes-bazar"].includes(section) && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif text-2xl">
+                  Gestión comercial
+                </CardTitle>
+                <div className="relative mt-2">
+                  <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input className="pl-9" placeholder="Buscar en el bazar..." />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Código</TableHead>
+                      <TableHead>Producto</TableHead>
+                      <TableHead>Categoría</TableHead>
+                      <TableHead>Stock</TableHead>
+                      <TableHead>Precio</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {products.slice(0, 6).map((p) => (
+                      <TableRow key={p.id}>
+                        <TableCell>{p.code}</TableCell>
+                        <TableCell className="font-medium">{p.name}</TableCell>
+                        <TableCell>{p.category}</TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={p.stock < 6 ? "destructive" : "secondary"}
+                          >
+                            {p.stock}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{formatARS(p.price)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          )}
+          {privateMode && (
+            <>
+              <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm">
+                <strong>Actividad privada e independiente.</strong> Esta
+                información no se vincula con el catálogo comercial ni es
+                visible para clientes del bazar.
+              </div>
+              <StatGrid items={loanStats} />
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle className="font-serif text-2xl">
+                    Clientes de préstamos
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Identidad protegida y acceso auditado.
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Legajo</TableHead>
+                        <TableHead>Cliente</TableHead>
+                        <TableHead>DNI</TableHead>
+                        <TableHead>Saldo</TableHead>
+                        <TableHead>Estado</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {loanClients.map((c) => (
+                        <TableRow key={c.id}>
+                          <TableCell>{c.id}</TableCell>
+                          <TableCell className="font-medium">
+                            {c.name}
+                          </TableCell>
+                          <TableCell>{c.dni}</TableCell>
+                          <TableCell>{formatARS(c.balance)}</TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                c.status === "En mora"
+                                  ? "destructive"
+                                  : "secondary"
+                              }
+                            >
+                              {c.status}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </>
+          )}
+          {["usuarios", "auditoria", "configuracion"].includes(section) && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-serif text-2xl">
+                  <Building2 className="size-5" />
+                  Control del sistema
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="roles">
+                  <TabsList>
+                    <TabsTrigger value="roles">Roles</TabsTrigger>
+                    <TabsTrigger value="activity">Actividad</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="roles" className="pt-4">
+                    <p className="text-sm text-muted-foreground">
+                      Los permisos comerciales y financieros se administran por
+                      separado. Solo el rol Finanzas puede acceder a préstamos
+                      personales.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="activity" className="pt-4">
+                    <p className="text-sm text-muted-foreground">
+                      Último acceso financiero: hoy 09:42 · usuario
+                      admin.finanzas
+                    </p>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          )}
+        </section>
+      </div>
+    </main>
+  );
+}

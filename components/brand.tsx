@@ -12,6 +12,6 @@ export function Brand({ compact = false }: { compact?: boolean }) {
   )
 }
 
-export function LotusMark() {
-  return <div aria-hidden="true" className="flex items-center justify-center gap-3 text-primary"><span className="h-px w-10 bg-primary/50"/><span className="size-2 rotate-45 border border-primary"/><span className="h-px w-10 bg-primary/50"/></div>
+export function LotusMark({ className = '' }: { className?: string }) {
+  return <div aria-hidden="true" className={`flex items-center justify-center gap-3 text-primary ${className}`}><span className="h-px w-10 bg-primary/50"/><span className="size-2 rotate-45 border border-primary"/><span className="h-px w-10 bg-primary/50"/></div>
 }
