@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: business.name,
     title: "Lu An Bazar",
     description: "Todo lo que buscás, en un solo lugar.",
-    images: ["/images/brand/lu-an-brand-reference.png"],
+    images: ["/images/brand/logotipo.png"],
   },
   twitter: {
     card: "summary_large_image",
@@ -58,6 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      data-scroll-behavior="smooth"
       className={`${montserrat.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >

@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { business } from "@/lib/business";
-import { products } from "@/lib/data";
+import { getPublishedProducts } from "@/lib/catalog";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const products = await getPublishedProducts();
   const updated = new Date();
   return [
     {

@@ -17,7 +17,8 @@ import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { business, mapsUrl, whatsappUrl } from "@/lib/business";
-import { categories, products } from "@/lib/data";
+import { categories as defaultCategories } from "@/lib/data";
+import { getPublishedProducts } from "@/lib/catalog";
 
 const categoryCopy: Record<string, string> = {
   "Cocina y bebidas": "Termos, jarras y artículos para compartir",
@@ -28,7 +29,13 @@ const categoryCopy: Record<string, string> = {
   Hogar: "Utilidad para tu casa o negocio",
 };
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const products = await getPublishedProducts();
+  const categories = Array.from(
+    new Set([...defaultCategories, ...products.map((product) => product.category)]),
+  );
   const featured = products.filter((product) => product.featured).slice(0, 6);
   const news = products.filter((product) => product.isNew).slice(0, 6);
   const localBusinessJsonLd = {
@@ -168,7 +175,7 @@ export default function Home() {
                   </div>
                   <h3 className="mt-7 font-serif text-2xl">{category}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    {categoryCopy[category]}
+                    {categoryCopy[category] ?? "Productos seleccionados para todos los días"}
                   </p>
                 </Link>
               );

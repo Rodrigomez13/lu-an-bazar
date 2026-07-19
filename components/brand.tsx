@@ -8,14 +8,16 @@ export function Brand({ compact = false }: { compact?: boolean }) {
       className="group flex items-center gap-3"
       aria-label="Lu An Bazar, inicio"
     >
-      <div className="relative size-11 overflow-hidden rounded-full border border-primary/40 bg-brand-navy">
+      <div
+        className={`relative overflow-hidden rounded-lg border border-primary/35 bg-brand-navy shadow-sm ${compact ? "size-11" : "size-14"}`}
+      >
         <Image
-          src="/images/brand/lu-an-brand-reference.png"
+          src="/images/brand/logotipo.png"
           alt=""
           fill
           priority
-          className="scale-[2.8] object-cover object-[50%_19%]"
-          sizes="44px"
+          className="object-contain"
+          sizes={compact ? "44px" : "56px"}
         />
       </div>
       {!compact && (

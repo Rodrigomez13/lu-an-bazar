@@ -10,6 +10,7 @@ export type Product = {
   description: string;
   stock?: number;
   featured?: boolean;
+  offer?: boolean;
   isNew?: boolean;
   color: string;
   material: string;

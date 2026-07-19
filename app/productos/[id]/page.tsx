@@ -17,16 +17,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { business, whatsappUrl } from "@/lib/business";
-import { products, formatARS } from "@/lib/data";
+import { formatARS } from "@/lib/data";
+import { getPublishedProducts } from "@/lib/catalog";
 
 type Props = { params: Promise<{ id: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getPublishedProducts();
   return products.map((product) => ({ id: product.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
+  const products = await getPublishedProducts();
   const product = products.find((item) => item.id === id);
   if (!product) return {};
   return {
@@ -43,6 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetail({ params }: Props) {
   const { id } = await params;
+  const products = await getPublishedProducts();
   const product = products.find((item) => item.id === id);
   if (!product) notFound();
   const related = products

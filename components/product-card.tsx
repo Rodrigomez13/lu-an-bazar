@@ -37,6 +37,9 @@ export function ProductCard({
         <div className="absolute left-3 top-3 flex gap-2">
           {product.isNew && <Badge>Novedad</Badge>}
           {discount > 0 && <Badge variant="secondary">-{discount}%</Badge>}
+          {product.offer && discount === 0 && (
+            <Badge variant="secondary">Oferta</Badge>
+          )}
         </div>
       </Link>
       <CardContent className="flex flex-1 flex-col gap-2 px-5 pt-5">

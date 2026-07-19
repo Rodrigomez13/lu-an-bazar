@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import {
   AlertTriangle,
@@ -75,6 +76,10 @@ const groups = [
     ],
   },
 ];
+const adminRoutes: Record<string, string> = {
+  productos: "/admin/productos",
+  "clientes-bazar": "/admin/clientes",
+};
 function StatGrid({
   items,
 }: {
@@ -140,6 +145,22 @@ export default function Admin() {
               <nav className="flex flex-col gap-1">
                 {group.items.map(([Icon, label, value]) => {
                   const I = Icon as typeof LayoutDashboard;
+                  const route = adminRoutes[value as string];
+                  if (route) {
+                    return (
+                      <Button
+                        key={value as string}
+                        asChild
+                        variant="ghost"
+                        className="justify-start text-brand-cream/65 hover:bg-brand-cream/10 hover:text-brand-cream"
+                      >
+                        <Link href={route}>
+                          <I data-icon="inline-start" />
+                          {label as string}
+                        </Link>
+                      </Button>
+                    );
+                  }
                   return (
                     <Button
                       key={value as string}
@@ -160,16 +181,23 @@ export default function Admin() {
           <div className="mb-6 flex gap-2 overflow-x-auto lg:hidden">
             {groups
               .flatMap((g) => g.items)
-              .map(([, label, value]) => (
-                <Button
-                  key={value as string}
-                  size="sm"
-                  variant={section === value ? "default" : "outline"}
-                  onClick={() => setSection(value as string)}
-                >
-                  {label as string}
-                </Button>
-              ))}
+              .map(([, label, value]) => {
+                const route = adminRoutes[value as string];
+                return route ? (
+                  <Button key={value as string} asChild size="sm" variant="outline">
+                    <Link href={route}>{label as string}</Link>
+                  </Button>
+                ) : (
+                  <Button
+                    key={value as string}
+                    size="sm"
+                    variant={section === value ? "default" : "outline"}
+                    onClick={() => setSection(value as string)}
+                  >
+                    {label as string}
+                  </Button>
+                );
+              })}
           </div>
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
