@@ -8,8 +8,8 @@ const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap' })
 
 export const metadata: Metadata = {
-  title: { default: 'Lu An Bazar | Hogar y financiación en Formosa', template: '%s | Lu An Bazar' },
-  description: 'Muebles, iluminación y objetos para tu hogar, con financiación cercana en Formosa.',
+  title: { default: 'Lu An Bazar | Bazar, hogar y regalos en Formosa', template: '%s | Lu An Bazar' },
+  description: 'Objetos para la cocina, organización, decoración, textiles y regalos elegidos con cuidado en Formosa.',
   generator: 'v0.app',
 }
 
