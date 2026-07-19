@@ -36,7 +36,7 @@ export const products: Product[] = [
     category: "Hogar",
     brand: "Hengda",
     price: 30500,
-    image: "/images/products/balanza-digital-40kg.jpg",
+    image: "/images/products/balanza-digital-40kg.png",
     description:
       "Balanza electrónica con cálculo de precio, pantalla triple y capacidad de hasta 40 kg.",
     featured: true,
@@ -57,7 +57,7 @@ export const products: Product[] = [
     name: "Máquina de cortar pelo Waer Pro",
     category: "Cuidado personal",
     brand: "Waer",
-    image: "/images/products/clipper-waer-pro.jpg",
+    image: "/images/products/clipper-waer-pro.png",
     description:
       "Cortadora profesional recargable con pantalla digital y peines para distintas alturas.",
     featured: true,
@@ -78,7 +78,7 @@ export const products: Product[] = [
     category: "Tecnología",
     brand: "Smart Camera",
     price: 16500,
-    image: "/images/products/foco-cámara.jpg",
+    image: "/images/products/foco-cámara.png",
     description:
       "Cámara de seguridad Wi-Fi con formato de foco para supervisar ambientes desde el celular.",
     featured: true,
@@ -100,7 +100,7 @@ export const products: Product[] = [
     category: "Salud y bienestar",
     brand: "Ecopower",
     price: 17500,
-    image: "/images/products/medidor-glucosa.jpg",
+    image: "/images/products/medidor-glucosa.png",
     description:
       "Kit doméstico para medición de glucosa con medidor, lanceta y 50 tiras reactivas.",
     isNew: true,
@@ -121,7 +121,7 @@ export const products: Product[] = [
     category: "Electrodomésticos",
     brand: "RAF",
     price: 28000,
-    image: "/images/products/mixer-5en1.jpg",
+    image: "/images/products/mixer-5en1.png",
     description:
       "Mixer multifunción con accesorios para mezclar, batir, triturar y procesar alimentos.",
     featured: true,
@@ -159,7 +159,7 @@ export const products: Product[] = [
     category: "Electrodomésticos",
     brand: "RAF",
     price: 14500,
-    image: "/images/products/pava-eléctrica-2000W.jpg",
+    image: "/images/products/pava-eléctrica-2000W.png",
     description:
       "Hervidor eléctrico de 2 litros, libre de BPA y disponible en diferentes colores.",
     color: "Colores surtidos",
@@ -178,7 +178,7 @@ export const products: Product[] = [
     name: "Plancha a vapor RAF 1400 W",
     category: "Electrodomésticos",
     brand: "RAF",
-    image: "/images/products/plancha-vapor-1400W.jpg",
+    image: "/images/products/plancha-vapor-1400W.png",
     description:
       "Plancha eléctrica con vapor continuo, rociador y control de temperatura.",
     isNew: true,
@@ -199,7 +199,7 @@ export const products: Product[] = [
     category: "Cuidado personal",
     brand: "RAF",
     price: 9500,
-    image: "/images/products/planchita-cabello.jpg",
+    image: "/images/products/planchita-cabello.png",
     description:
       "Alisador y rizador 2 en 1 con placas de aluminio y revestimiento cerámico.",
     color: "Gris y naranja",
@@ -214,7 +214,7 @@ export const products: Product[] = [
     name: "Secador de cabello LUO 5 en 1",
     category: "Cuidado personal",
     brand: "LUO",
-    image: "/images/products/secador-cabello.jpg",
+    image: "/images/products/secador-cabello.png",
     description:
       "Secador profesional de alta potencia con cinco accesorios para distintos estilos.",
     featured: true,
@@ -234,7 +234,7 @@ export const products: Product[] = [
     name: "Set de jarra y vasos Frutilla",
     category: "Cocina y bebidas",
     brand: "Genérica",
-    image: "/images/products/set-vasos-jarra.jpg",
+    image: "/images/products/set-vasos-jarra.png",
     description:
       "Juego de vidrio con una jarra y cuatro vasos decorados con diseño de frutillas.",
     isNew: true,
@@ -255,7 +255,7 @@ export const products: Product[] = [
     category: "Salud y bienestar",
     brand: "Ecopower",
     price: 17500,
-    image: "/images/products/tensiómetro-digital.jpg",
+    image: "/images/products/tensiómetro-digital.png",
     description:
       "Tensiómetro electrónico de brazo con pantalla digital y memoria de mediciones.",
     color: "Blanco",
@@ -271,7 +271,7 @@ export const products: Product[] = [
     category: "Cocina y bebidas",
     brand: "LUO",
     price: 11500,
-    image: "/images/products/termolar-chico.jpg",
+    image: "/images/products/termolar-chico.png",
     description:
       "Termo compacto con manija rebatible, pico cebador y variedad de colores.",
     isNew: true,
@@ -288,7 +288,7 @@ export const products: Product[] = [
     category: "Cocina y bebidas",
     brand: "Marca a confirmar",
     price: 27900,
-    image: "/images/products/termolar-grande-frio-caliente.jpg",
+    image: "/images/products/termolar-grande-frio-caliente.png",
     description:
       "Termo de gran capacidad con manija, pico vertedor y vaso térmico incluido.",
     featured: true,
