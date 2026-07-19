@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { apiError, requireAdminAccess } from "@/lib/admin-api";
+import { apiError, requireAdminRole } from "@/lib/admin-api";
 import { createAdminSupabaseClient } from "@/lib/supabase/clients";
 
 function value(data: Record<string, unknown>, key: string) {
@@ -28,7 +28,7 @@ function payload(data: Record<string, unknown>) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager", "seller"]);
     const body = (await request.json()) as Record<string, unknown>;
     const supabase = createAdminSupabaseClient();
     const { data, error } = await supabase
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager", "seller"]);
     const body = (await request.json()) as Record<string, unknown>;
     const id = value(body, "id");
     if (!id) throw new Error("Falta identificar el cliente.");
@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager", "seller"]);
     const body = (await request.json()) as { id?: string };
     if (!body.id) throw new Error("Falta identificar el cliente.");
     const supabase = createAdminSupabaseClient();

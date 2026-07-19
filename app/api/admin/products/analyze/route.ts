@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
-import { apiError, requireAdminAccess } from "@/lib/admin-api";
+import { apiError, requireAdminRole } from "@/lib/admin-api";
 import { isOpenAIConfigured } from "@/lib/supabase/config";
 
 export const runtime = "nodejs";
@@ -27,7 +27,7 @@ const ProductAnalysis = z.object({
 
 export async function POST(request: Request) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager"]);
     if (!isOpenAIConfigured()) {
       throw new Error("Agregá OPENAI_API_KEY en .env.local para usar el análisis automático.");
     }

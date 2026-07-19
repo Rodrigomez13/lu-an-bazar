@@ -1,12 +1,9 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { adminSession, isValidAdminSession } from "@/lib/admin-session";
+import { hasAdminAccess } from "@/lib/admin-api";
 
 export default async function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get(adminSession.cookieName)?.value;
-  if (!(await isValidAdminSession(session))) redirect("/ingresar");
+  if (!(await hasAdminAccess())) redirect("/ingresar");
   return children;
 }

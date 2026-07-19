@@ -79,6 +79,13 @@ const groups = [
 const adminRoutes: Record<string, string> = {
   productos: "/admin/productos",
   "clientes-bazar": "/admin/clientes",
+  prestamos: "/admin/prestamos",
+  "clientes-prestamos": "/admin/prestamos/clientes",
+  cobros: "/admin/prestamos/cobros",
+  mora: "/admin/prestamos/mora",
+  usuarios: "/admin/sistema/usuarios",
+  auditoria: "/admin/sistema/auditoria",
+  configuracion: "/admin/sistema/configuracion",
 };
 function StatGrid({
   items,

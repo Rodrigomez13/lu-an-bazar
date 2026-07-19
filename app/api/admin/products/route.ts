@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
-import { apiError, requireAdminAccess } from "@/lib/admin-api";
+import { apiError, requireAdminRole } from "@/lib/admin-api";
 import { createAdminSupabaseClient } from "@/lib/supabase/clients";
 
 export const runtime = "nodejs";
@@ -108,7 +108,7 @@ function productPayload(formData: FormData) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager"]);
     const formData = await request.formData();
     const rawImage = formData.get("originalImage");
     const catalogImage = formData.get("catalogImage");
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager"]);
     const formData = await request.formData();
     const id = stringValue(formData, "databaseId");
     if (!id) throw new Error("Falta identificar el producto.");
@@ -180,7 +180,7 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager"]);
     const { id } = (await request.json()) as { id?: string };
     if (!id) throw new Error("Falta identificar el producto.");
     const supabase = createAdminSupabaseClient();

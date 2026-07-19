@@ -1,12 +1,12 @@
 import OpenAI, { toFile } from "openai";
-import { apiError, requireAdminAccess } from "@/lib/admin-api";
+import { apiError, requireAdminRole } from "@/lib/admin-api";
 import { isOpenAIConfigured } from "@/lib/supabase/config";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    await requireAdminAccess();
+    await requireAdminRole(["admin", "catalog_manager"]);
     if (!isOpenAIConfigured()) {
       throw new Error("Agregá OPENAI_API_KEY en .env.local para mejorar imágenes.");
     }
