@@ -117,7 +117,7 @@ export default async function Home() {
             </div>
             <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-t-[12rem] border border-primary/30 bg-brand-cream/5">
               <Image
-                src="/images/products/pava-eléctrica-1500W.png"
+                src="/images/products/catalogo-completo.png"
                 alt="Set de jarra y vasos disponible en Lu An Bazar"
                 fill
                 priority
