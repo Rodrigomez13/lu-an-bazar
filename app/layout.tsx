@@ -15,18 +15,31 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
-});
+}); 
 
 export const metadata: Metadata = {
   metadataBase: new URL(business.siteUrl),
+
   title: {
     default: "Lu An Bazar | Bazar, tecnología y hogar en Formosa",
     template: "%s | Lu An Bazar",
   },
+
   description:
     "Catálogo de bazar, electrodomésticos, cuidado personal, tecnología y productos para el hogar en Formosa.",
+
   applicationName: business.name,
-  alternates: { canonical: "/" },
+
+  icons: {
+    icon: "/images/brand/logo-favicon.png",
+    shortcut: "/images/brand/logo-favicon.png",
+    apple: "/images/brand/logo-favicon.png",
+  },
+
+  alternates: {
+    canonical: "/",
+  },
+
   openGraph: {
     type: "website",
     locale: "es_AR",
@@ -35,6 +48,7 @@ export const metadata: Metadata = {
     description: "Todo lo que buscás, en un solo lugar.",
     images: ["/images/brand/logotipo.png"],
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Lu An Bazar",
