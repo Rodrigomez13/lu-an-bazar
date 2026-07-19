@@ -1,0 +1,12 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowLeft, Check, MessageCircle, Truck } from 'lucide-react'
+import { notFound } from 'next/navigation'
+import { SiteHeader } from '@/components/site-header'
+import { SiteFooter } from '@/components/site-footer'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { products, formatARS, installments } from '@/lib/data'
+
+export default async function ProductDetail({params}:{params:Promise<{id:string}>}){const {id}=await params;const product=products.find(p=>p.id===id);if(!product)notFound();return <><SiteHeader/><main className="mx-auto max-w-7xl px-5 py-8 lg:px-8"><Button asChild variant="ghost"><Link href="/productos"><ArrowLeft data-icon="inline-start"/>Volver al catálogo</Link></Button><div className="mt-6 grid gap-10 md:grid-cols-2"><div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary"><Image src={product.image} alt={product.name} fill priority className="object-cover" sizes="(max-width:768px) 100vw, 50vw"/></div><div className="flex flex-col items-start gap-5 py-4"><Badge>{product.category}</Badge><div><h1 className="text-balance font-serif text-5xl">{product.name}</h1><p className="mt-4 text-lg leading-relaxed text-muted-foreground">{product.description}</p></div><Separator/><div><p className="font-serif text-4xl">{formatARS(product.price)}</p><p className="mt-2 text-sm text-muted-foreground">o 12 cuotas estimadas de {formatARS(installments(product.price))}</p></div><div className="flex w-full flex-col gap-3 sm:flex-row"><Button asChild size="lg" className="flex-1"><Link href="/prestamos/solicitar">Financiar este producto</Link></Button><Button size="lg" variant="outline" className="flex-1"><MessageCircle data-icon="inline-start"/>Consultar</Button></div><div className="mt-3 flex flex-col gap-3 text-sm"><p className="flex items-center gap-3"><Check className="size-4 text-accent"/>Stock disponible: {product.stock} unidades</p><p className="flex items-center gap-3"><Truck className="size-4 text-accent"/>Entrega coordinada en Formosa</p></div><div className="mt-4 rounded-xl bg-secondary p-5"><h2 className="font-serif text-xl">Elegido con intención</h2><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Cada pieza de nuestra colección combina materiales nobles, funcionalidad y una estética serena que acompaña el paso del tiempo.</p></div></div></div></main><SiteFooter/></>}
