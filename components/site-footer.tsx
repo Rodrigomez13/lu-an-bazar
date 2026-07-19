@@ -1,6 +1,15 @@
 import Link from "next/link";
-import { Camera, Clock, MapPin, MessageCircle } from "lucide-react";
+import {
+  Clock,
+  ExternalLink,
+  Camera,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 import { Brand } from "@/components/brand";
+import { business, mapsUrl, whatsappUrl } from "@/lib/business";
+
 export function SiteFooter() {
   return (
     <footer id="contacto" className="border-t bg-brand-navy text-brand-cream">
@@ -8,8 +17,8 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4">
           <Brand />
           <p className="max-w-sm text-sm leading-relaxed text-brand-cream/70">
-            Bazar, hogar y regalos elegidos con cuidado. Consultá disponibilidad
-            y reservá por WhatsApp.
+            Bazar, tecnología, electrodomésticos y productos útiles para todos
+            los días. Consultá y reservá por WhatsApp.
           </p>
         </div>
         <div className="flex flex-col gap-3 text-sm">
@@ -18,28 +27,52 @@ export function SiteFooter() {
           <Link href="/#categorias">Categorías</Link>
           <Link href="/#ofertas">Ofertas</Link>
           <Link href="/#novedades">Novedades</Link>
+          {business.facebookUrl && (
+            <a
+              href={business.facebookUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2"
+            >
+              Facebook <ExternalLink className="size-3" />
+            </a>
+          )}
         </div>
         <div className="flex flex-col gap-3 text-sm">
           <p className="font-semibold text-primary">Estamos cerca</p>
-          <p className="flex items-center gap-2">
+          <a
+            className="flex items-center gap-2 hover:text-primary"
+            href={mapsUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             <MapPin className="size-4" />
-            Formosa, Argentina
-          </p>
+            {business.address}
+          </a>
           <p className="flex items-center gap-2">
             <Clock className="size-4" />
             Lun a sáb · 9 a 20 h
           </p>
           <a
-            className="flex items-center gap-2"
-            href="https://wa.me/543704000000"
+            className="flex items-center gap-2 hover:text-primary"
+            href={whatsappUrl()}
+            target="_blank"
+            rel="noreferrer"
           >
-            <MessageCircle className="size-4" />
-            3704 000000
+            <Phone className="size-4" />
+            {business.phoneDisplay}
           </a>
-          <p className="flex items-center gap-2">
-            <Camera className="size-4" />
-            @luanbazar
-          </p>
+          {business.instagramUrl && (
+            <a
+              className="flex items-center gap-2 hover:text-primary"
+              href={business.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Camera className="size-4" />
+              {business.instagramHandle}
+            </a>
+          )}
         </div>
       </div>
       <div className="border-t border-brand-cream/10 px-5 py-5 text-center text-xs text-brand-cream/50">
@@ -49,7 +82,9 @@ export function SiteFooter() {
         </Link>
       </div>
       <a
-        href="https://wa.me/543704000000"
+        href={whatsappUrl(
+          "Hola, quiero consultar por los productos de Lu An Bazar.",
+        )}
         target="_blank"
         rel="noreferrer"
         aria-label="Consultar por WhatsApp"

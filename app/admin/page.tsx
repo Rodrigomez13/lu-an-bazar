@@ -19,6 +19,7 @@ import {
 import { toast } from "sonner";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { Brand } from "@/components/brand";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,6 +112,7 @@ export default function Admin() {
         <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 lg:px-8">
           <Brand />
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Badge variant="secondary">
               <LockKeyhole className="mr-1 size-3" />
               Área privada
@@ -209,7 +211,7 @@ export default function Admin() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="font-serif text-2xl">
-                      Ventas mensuales
+                      Consultas mensuales (demo)
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -311,12 +313,20 @@ export default function Admin() {
                         <TableCell>{p.category}</TableCell>
                         <TableCell>
                           <Badge
-                            variant={p.stock < 6 ? "destructive" : "secondary"}
+                            variant={
+                              typeof p.stock === "number" && p.stock < 6
+                                ? "destructive"
+                                : "secondary"
+                            }
                           >
-                            {p.stock}
+                            {typeof p.stock === "number"
+                              ? p.stock
+                              : "A confirmar"}
                           </Badge>
                         </TableCell>
-                        <TableCell>{formatARS(p.price)}</TableCell>
+                        <TableCell>
+                          {p.price ? formatARS(p.price) : "Consultar"}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -329,7 +339,9 @@ export default function Admin() {
               <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm">
                 <strong>Actividad privada e independiente.</strong> Esta
                 información no se vincula con el catálogo comercial ni es
-                visible para clientes del bazar.
+                visible para clientes del bazar. El módulo todavía usa datos de
+                demostración: no cargues información personal real hasta
+                conectar autenticación por roles, base de datos y auditoría.
               </div>
               <StatGrid items={loanStats} />
               <Card className="mt-6">

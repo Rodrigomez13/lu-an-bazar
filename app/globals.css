@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -34,7 +34,7 @@
   --color-brand-gold: var(--brand-gold);
   --color-brand-cream: var(--brand-cream);
   --color-brand-green: var(--brand-green);
-  --radius-sm: calc(var(--radius) * .7);
+  --radius-sm: calc(var(--radius) * 0.7);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) * 1.35);
   --radius-xl: calc(var(--radius) * 1.8);
@@ -69,16 +69,69 @@
   --chart-3: #0d1b2a;
   --chart-4: #b59632;
   --chart-5: #53606d;
-  --radius: .7rem;
+  --radius: 0.7rem;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #08131f;
+  --foreground: #f8efe3;
+  --card: #102131;
+  --card-foreground: #f8efe3;
+  --popover: #102131;
+  --popover-foreground: #f8efe3;
+  --primary: #e0bd4b;
+  --primary-foreground: #091521;
+  --secondary: #192d3f;
+  --secondary-foreground: #f8efe3;
+  --muted: #192d3f;
+  --muted-foreground: #aebcca;
+  --accent: #5caa82;
+  --accent-foreground: #07140e;
+  --destructive: #e06464;
+  --border: #294054;
+  --input: #294054;
+  --ring: #e0bd4b;
+  --brand-navy: #07131f;
+  --brand-gold: #e0bd4b;
+  --brand-cream: #f5e8d5;
+  --brand-green: #5caa82;
+  --chart-1: #e0bd4b;
+  --chart-2: #5caa82;
+  --chart-3: #9fc5e5;
+  --chart-4: #c79f27;
+  --chart-5: #aebcca;
 }
 
 @layer base {
-  * { @apply border-border outline-ring/50; }
-  html { scroll-behavior: smooth; }
-  body { @apply bg-background font-sans text-foreground; }
-  ::selection { @apply bg-primary text-primary-foreground; }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background font-sans text-foreground;
+    min-height: 100vh;
+  }
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
 }
 
 @layer utilities {
-  .brand-texture { background-image: radial-gradient(color-mix(in srgb, var(--brand-gold) 12%, transparent) 0.7px, transparent 0.7px); background-size: 14px 14px; }
+  .brand-texture {
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--brand-gold) 12%, transparent) 0.7px,
+      transparent 0.7px
+    );
+    background-size: 14px 14px;
+  }
+  .surface-glow {
+    background-image: radial-gradient(
+      circle at 10% 0%,
+      color-mix(in srgb, var(--brand-gold) 12%, transparent),
+      transparent 34%
+    );
+  }
 }
