@@ -17,7 +17,7 @@ import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { business, mapsUrl, whatsappUrl } from "@/lib/business";
-import { categories as defaultCategories } from "@/lib/data";
+import { categories as defaultCategories, formatARS } from "@/lib/data";
 import { getPublishedProducts } from "@/lib/catalog";
 
 const categoryCopy: Record<string, string> = {
@@ -38,6 +38,7 @@ export default async function Home() {
   );
   const featured = products.filter((product) => product.featured).slice(0, 6);
   const news = products.filter((product) => product.isNew).slice(0, 6);
+  const heroProducts = (featured.length > 0 ? featured : products).slice(0, 3);
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -115,27 +116,62 @@ export default async function Home() {
                 <Button type="submit">Buscar</Button>
               </form>
             </div>
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-t-[12rem] border border-primary/30 bg-brand-cream/5">
-              <Image
-                src="/images/products/catalogo-completo.png"
-                alt="Set de jarra y vasos disponible en Lu An Bazar"
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width:768px) 90vw, 40vw"
-              />
-              <div className="absolute inset-x-5 bottom-5 rounded-xl border border-brand-cream/20 bg-brand-navy/90 p-4 backdrop-blur">
-                <div className="flex items-center gap-2 text-primary">
-                  <Sparkles className="size-4" />
-                  <p className="text-xs font-semibold uppercase tracking-[.18em]">
-                    Novedades reales
-                  </p>
-                </div>
-                <p className="mt-1 font-serif text-xl">
-                  Productos recién incorporados
-                </p>
-                <p className="text-xs text-brand-cream/60">
-                  Consultá colores y disponibilidad por WhatsApp.
+            <div className="relative mx-auto w-full max-w-xl">
+              <div className="absolute -inset-8 rounded-full bg-primary/10 blur-3xl" />
+              <div className="relative grid min-h-[440px] grid-cols-[1.18fr_.82fr] grid-rows-2 gap-3 sm:min-h-[500px] sm:gap-4">
+                {heroProducts.map((product, index) => (
+                  <Link
+                    key={product.id}
+                    href={`/productos/${product.id}`}
+                    className={`group relative overflow-hidden border border-brand-cream/15 bg-brand-cream shadow-2xl transition-transform duration-300 hover:-translate-y-1 ${
+                      index === 0
+                        ? "row-span-2 rounded-[2rem]"
+                        : "rounded-2xl"
+                    }`}
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      loading="eager"
+                      className={`object-contain transition-transform duration-500 group-hover:scale-[1.03] ${
+                        index === 0 ? "p-4 pb-28 sm:p-7 sm:pb-32" : "p-3 pb-20"
+                      }`}
+                      sizes={
+                        index === 0
+                          ? "(max-width: 768px) 55vw, 27vw"
+                          : "(max-width: 768px) 35vw, 16vw"
+                      }
+                    />
+                    <div
+                      className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-navy via-brand-navy/95 to-transparent ${
+                        index === 0 ? "px-5 pb-5 pt-16" : "px-3 pb-3 pt-12"
+                      }`}
+                    >
+                      <p className="text-[10px] font-semibold uppercase tracking-[.16em] text-primary">
+                        {index === 0 ? "Selección destacada" : product.category}
+                      </p>
+                      <h2
+                        className={`mt-1 text-balance font-serif text-brand-cream ${
+                          index === 0 ? "text-xl sm:text-2xl" : "line-clamp-2 text-sm sm:text-base"
+                        }`}
+                      >
+                        {product.name}
+                      </h2>
+                      {product.price && (
+                        <p className="mt-1 text-xs font-semibold text-brand-cream/70">
+                          {formatARS(product.price)}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="relative -mt-3 ml-auto mr-4 flex w-fit items-center gap-3 rounded-full border border-primary/35 bg-brand-navy px-4 py-2.5 shadow-xl sm:mr-8">
+                <Sparkles className="size-4 text-primary" />
+                <p className="text-xs text-brand-cream/70">
+                  <span className="font-semibold text-brand-cream">Nuevos ingresos</span>
+                  {" · "}consultá disponibilidad
                 </p>
               </div>
             </div>

@@ -192,6 +192,9 @@ grant select on public.catalog_products, public.loan_portfolio_summary to servic
 
 commit;
 
+-- Fuerza a PostgREST a reconocer la tabla y la función recién creadas.
+notify pgrst, 'reload schema';
+
 -- Verificación sugerida después de ejecutar el archivo:
 -- select key, value from public.app_settings where key = 'finance';
 -- select has_function_privilege('service_role',

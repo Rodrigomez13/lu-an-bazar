@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Clock,
   ExternalLink,
   Camera,
   MapPin,
-  MessageCircle,
   Phone,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
@@ -88,9 +88,15 @@ export function SiteFooter() {
         target="_blank"
         rel="noreferrer"
         aria-label="Consultar por WhatsApp"
-        className="fixed right-5 bottom-5 z-40 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+        className="fixed right-5 bottom-5 z-40 block size-16 rounded-full shadow-[0_12px_35px_rgba(37,211,102,.38)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
       >
-        <MessageCircle className="size-7" />
+        <Image
+          src="/images/brand/logo-whatsapp.png"
+          alt=""
+          width={64}
+          height={64}
+          className="size-16 object-contain"
+        />
       </a>
     </footer>
   );
