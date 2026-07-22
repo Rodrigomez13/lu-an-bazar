@@ -55,6 +55,16 @@ export default async function MetaIntegrationPage() {
       ready: isSet(process.env.META_CATALOG_ID),
       detail: "Identificador de Commerce Manager",
     },
+    {
+      label: "Fan page autorizada",
+      ready: isSet(process.env.META_PAGE_ID) && isSet(process.env.META_PAGE_ACCESS_TOKEN),
+      detail: "Token de Página disponible sólo en el servidor",
+    },
+    {
+      label: "Webhook de Página",
+      ready: isSet(process.env.META_WEBHOOK_VERIFY_TOKEN) && isSet(process.env.META_WEBHOOK_APP_SECRET),
+      detail: "Importación firmada de publicaciones nuevas",
+    },
   ];
   const readyCount = checks.filter((check) => check.ready).length;
 
@@ -176,6 +186,11 @@ export default async function MetaIntegrationPage() {
               <Button asChild variant="outline" className="mt-2">
                 <Link href="/admin/sistema/meta/guia">
                   <BookOpen data-icon="inline-start" /> Guía de activación
+                </Link>
+              </Button>
+              <Button asChild className="mt-2 ml-2">
+                <Link href="/admin/publicaciones">
+                  <Share2 data-icon="inline-start" /> Gestionar publicaciones
                 </Link>
               </Button>
             </CardContent>

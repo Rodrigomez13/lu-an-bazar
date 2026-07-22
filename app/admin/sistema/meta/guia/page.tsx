@@ -30,6 +30,14 @@ const steps = [
     text: "Generá el token desde Events Manager y cargalo como META_CONVERSIONS_API_TOKEN en Vercel. Indicá también la versión de Graph API vigente.",
   },
   {
+    title: "Autorizar la fan page",
+    text: "En una app de Meta para empresas obtené un token de Página con pages_show_list, pages_read_engagement y pages_manage_posts. Guardá META_PAGE_ID y META_PAGE_ACCESS_TOKEN sólo en Vercel.",
+  },
+  {
+    title: "Conectar el webhook",
+    text: "Configurá el callback /api/meta/webhooks/page, un token de verificación aleatorio y el secreto de la app. Suscribí el campo feed para recibir publicaciones nuevas en la cola de revisión.",
+  },
+  {
     title: "Verificar y probar",
     text: "Usá Probar eventos en Events Manager, aceptá la medición en la web, visitá una ficha y enviá una consulta. Deben verse PageView, ViewContent, AddToCart y Contact sin duplicados.",
   },
@@ -51,6 +59,9 @@ export default function MetaGuidePage() {
         <Link href="/admin/sistema/meta">
           <ArrowLeft data-icon="inline-start" /> Volver al estado
         </Link>
+      </Button>
+      <Button asChild className="mb-5 ml-2">
+        <Link href="/admin/publicaciones">Abrir publicaciones Meta</Link>
       </Button>
 
       <div className="grid gap-5 xl:grid-cols-[1fr_340px]">

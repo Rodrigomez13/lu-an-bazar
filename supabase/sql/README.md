@@ -10,6 +10,8 @@ Ejecutá estos archivos, en orden, desde **Supabase → SQL Editor** en el proye
 5. `05_views_and_queries.sql`
 6. `06_seed_catalog.sql` (carga los productos que hoy ya están en la web)
 7. `07_financial_panel.sql` (configuración, permisos explícitos y alta atómica de préstamos/cuotas)
+8. `08_app_settings_repair.sql` (repara instalaciones previas sin configuración)
+9. `09_meta_social_hub.sql` (borradores, publicaciones e importación segura desde Meta)
 
 Después:
 
@@ -37,3 +39,7 @@ puede ejecutarse desde el servidor con la clave Secret.
 Los archivos son seguros para una primera instalación. Si más adelante cambia
 el esquema de una base ya poblada, conviene crear migraciones incrementales en
 lugar de volver a ejecutar el esquema completo.
+
+`09_meta_social_hub.sql` no publica nada por sí solo. Mantiene una cola privada,
+protegida con RLS, y deja que las rutas del servidor usen el token de Página sin
+exponerlo al navegador.

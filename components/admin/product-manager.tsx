@@ -9,6 +9,7 @@ import {
   BadgePercent,
   ImagePlus,
   LoaderCircle,
+  Megaphone,
   Pencil,
   Plus,
   Search,
@@ -390,7 +391,11 @@ export function ProductManager({
                   <div className="flex flex-wrap items-center gap-2"><p className="truncate font-semibold">{product.name}</p>{product.featured && <Badge><Star className="size-3" /> Destacado</Badge>}{(product.offer || product.previousPrice) && <Badge variant="secondary">Oferta</Badge>}{!product.published && <Badge variant="outline">Borrador</Badge>}</div>
                   <p className="mt-1 text-xs text-muted-foreground">{product.code} · {product.category} · {product.price ? formatARS(product.price) : "Sin precio"}</p>
                 </div>
-                <div className="flex gap-2 sm:justify-end"><Button size="sm" variant="outline" onClick={() => edit(product)}><Pencil /> Editar</Button><Button size="icon-sm" variant="ghost" disabled={!product.databaseId || busy} onClick={() => archive(product)} aria-label={`Archivar ${product.name}`}><Trash2 /></Button></div>
+                <div className="flex flex-wrap gap-2 sm:justify-end">
+                  {product.databaseId && <Button asChild size="sm" variant="outline"><Link href={`/admin/publicaciones?product=${product.databaseId}`}><Megaphone /> Publicar</Link></Button>}
+                  <Button size="sm" variant="outline" onClick={() => edit(product)}><Pencil /> Editar</Button>
+                  <Button size="icon-sm" variant="ghost" disabled={!product.databaseId || busy} onClick={() => archive(product)} aria-label={`Archivar ${product.name}`}><Trash2 /></Button>
+                </div>
               </div>
             ))}
           </CardContent>

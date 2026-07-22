@@ -8,6 +8,7 @@ import {
   FileClock,
   LayoutDashboard,
   LockKeyhole,
+  Megaphone,
   Network,
   PackageSearch,
   ReceiptText,
@@ -33,6 +34,7 @@ const groups: { title: string; items: NavItem[] }[] = [
       { href: "/admin", label: "Resumen comercial", icon: LayoutDashboard, roles: allRoles },
       { href: "/admin/productos", label: "Productos", icon: Boxes, roles: ["admin", "catalog_manager"] },
       { href: "/admin/productos", label: "Inventario", icon: PackageSearch, roles: ["admin", "catalog_manager"] },
+      { href: "/admin/publicaciones", label: "Publicaciones Meta", icon: Megaphone, roles: ["admin", "catalog_manager"] },
       { href: "/admin/clientes", label: "Clientes del bazar", icon: Users, roles: ["admin", "catalog_manager", "seller"] },
     ],
   },
@@ -113,7 +115,7 @@ export async function AdminModuleShell({
           <div className="mb-5 flex gap-2 overflow-x-auto pb-1 lg:hidden">
             <Button asChild size="sm" variant="outline"><Link href="/admin"><ArrowLeft /> Panel</Link></Button>
             {visibleGroups.slice(1).flatMap((group) => group.items).map((item) => (
-              <Button key={item.href} asChild size="sm" variant={activePath === item.href ? "default" : "outline"}>
+              <Button key={`${item.href}-${item.label}`} asChild size="sm" variant={activePath === item.href ? "default" : "outline"}>
                 <Link href={item.href}>{item.label}</Link>
               </Button>
             ))}
