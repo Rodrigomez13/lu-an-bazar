@@ -4,7 +4,7 @@ export const business = {
   phoneDisplay: "+54 9 370 432-5046",
   whatsappNumber: "5493704325046",
   instagramHandle: "@luanbazar",
-  instagramUrl: "",
+  instagramUrl: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
   facebookUrl: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "",
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ??

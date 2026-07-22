@@ -13,6 +13,9 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductCard } from "@/components/product-card";
 import { ShareProductButton } from "@/components/share-product-button";
+import { AddToConsultationButton } from "@/components/consultation-list";
+import { ProductViewTracker } from "@/components/product-view-tracker";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -67,7 +70,10 @@ export default async function ProductDetail({ params }: Props) {
             "@type": "Offer",
             priceCurrency: "ARS",
             price: product.price,
-            availability: "https://schema.org/InStock",
+            availability:
+              product.stock === 0
+                ? "https://schema.org/OutOfStock"
+                : "https://schema.org/InStock",
             url: `${business.siteUrl}${path}`,
           },
         }
@@ -77,6 +83,12 @@ export default async function ProductDetail({ params }: Props) {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+        <ProductViewTracker
+          id={product.id}
+          name={product.name}
+          category={product.category}
+          value={product.price}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
@@ -127,19 +139,39 @@ export default async function ProductDetail({ params }: Props) {
             </div>
             <div className="flex w-full flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="flex-1">
-                <a
+                <TrackedWhatsAppLink
                   href={whatsappUrl(
                     `Hola, quiero consultar por el producto ${product.name}, código ${product.code}.`,
                   )}
                   target="_blank"
                   rel="noreferrer"
+                  tracking={{
+                    contentId: product.id,
+                    contentName: product.name,
+                    category: product.category,
+                    value: product.price,
+                    currency: product.price ? "ARS" : undefined,
+                    source: "product_detail",
+                  }}
                 >
                   <MessageCircle data-icon="inline-start" />
                   Consultar por WhatsApp
-                </a>
+                </TrackedWhatsAppLink>
               </Button>
               <ShareProductButton name={product.name} path={path} showLabel />
             </div>
+            <AddToConsultationButton
+              showLabel
+              className="w-full"
+              product={{
+                id: product.id,
+                code: product.code,
+                name: product.name,
+                image: product.image,
+                category: product.category,
+                price: product.price,
+              }}
+            />
             <div className="flex flex-col gap-3 text-sm">
               <p className="flex items-center gap-3">
                 <PackageCheck className="size-4 text-accent" />

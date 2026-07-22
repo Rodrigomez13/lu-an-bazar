@@ -2,6 +2,8 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ConsultationListProvider } from "@/components/consultation-list";
+import { MetaConsent } from "@/components/meta-consent";
 import { Toaster } from "@/components/ui/sonner";
 import { business } from "@/lib/business";
 import "./globals.css";
@@ -78,9 +80,12 @@ export default function RootLayout({
     >
       <body className="antialiased">
         <ThemeProvider>
-          {children}
-          <Toaster richColors />
-          {process.env.NODE_ENV === "production" && <Analytics />}
+          <ConsultationListProvider>
+            <MetaConsent pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
+            {children}
+            <Toaster richColors />
+            {process.env.NODE_ENV === "production" && <Analytics />}
+          </ConsultationListProvider>
         </ThemeProvider>
       </body>
     </html>

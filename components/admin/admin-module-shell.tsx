@@ -8,6 +8,7 @@ import {
   FileClock,
   LayoutDashboard,
   LockKeyhole,
+  Network,
   PackageSearch,
   ReceiptText,
   Settings,
@@ -49,6 +50,7 @@ const groups: { title: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/sistema/usuarios", label: "Usuarios y roles", icon: ShieldCheck, roles: ["admin"] },
       { href: "/admin/sistema/auditoria", label: "Auditoría", icon: FileClock, roles: ["admin"] },
+      { href: "/admin/sistema/meta", label: "Meta y catálogo", icon: Network, roles: ["admin"] },
       { href: "/admin/sistema/configuracion", label: "Configuración", icon: Settings, roles: ["admin"] },
     ],
   },

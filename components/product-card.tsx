@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShareProductButton } from "@/components/share-product-button";
+import { AddToConsultationButton } from "@/components/consultation-list";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 export function ProductCard({
   product,
@@ -78,17 +80,35 @@ export function ProductCard({
             Ver producto <ArrowUpRight data-icon="inline-end" />
           </Link>
         </Button>
+        <AddToConsultationButton
+          product={{
+            id: product.id,
+            code: product.code,
+            name: product.name,
+            image: product.image,
+            category: product.category,
+            price: product.price,
+          }}
+        />
         <Button asChild size="icon">
-          <a
+          <TrackedWhatsAppLink
             href={whatsappUrl(
               `Hola, quiero consultar por ${product.name}, código ${product.code}.`,
             )}
             target="_blank"
             rel="noreferrer"
             aria-label={`Consultar por ${product.name}`}
+            tracking={{
+              contentId: product.id,
+              contentName: product.name,
+              category: product.category,
+              value: product.price,
+              currency: product.price ? "ARS" : undefined,
+              source: "product_card",
+            }}
           >
             <MessageCircle />
-          </a>
+          </TrackedWhatsAppLink>
         </Button>
         <ShareProductButton name={product.name} path={path} />
       </CardFooter>

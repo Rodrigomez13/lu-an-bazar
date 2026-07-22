@@ -1,10 +1,24 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { ProductsCatalog } from "@/components/products-catalog";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublishedProducts } from "@/lib/catalog";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Catálogo de productos",
+  description:
+    "Explorá el catálogo actualizado de Lu An Bazar y consultá disponibilidad por WhatsApp.",
+  alternates: { canonical: "/productos" },
+  openGraph: {
+    title: "Catálogo de productos | Lu An Bazar",
+    description:
+      "Bazar, tecnología, electrodomésticos y productos para el hogar en Formosa.",
+    url: "/productos",
+  },
+};
 
 export default async function ProductsPage() {
   const products = await getPublishedProducts();

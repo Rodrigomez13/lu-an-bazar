@@ -14,6 +14,7 @@ import { LotusMark } from "@/components/brand";
 import { ProductCard } from "@/components/product-card";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { business, mapsUrl, whatsappUrl } from "@/lib/business";
@@ -88,16 +89,17 @@ export default async function Home() {
                   variant="outline"
                   className="border-brand-cream/30 bg-transparent text-brand-cream hover:bg-brand-cream hover:text-brand-navy"
                 >
-                  <a
+                  <TrackedWhatsAppLink
                     href={whatsappUrl(
                       "Hola, quiero consultar por los productos de Lu An Bazar.",
                     )}
                     target="_blank"
                     rel="noreferrer"
+                    tracking={{ source: "home_hero" }}
                   >
                     <MessageCircle data-icon="inline-start" />
                     Consultar por WhatsApp
-                  </a>
+                  </TrackedWhatsAppLink>
                 </Button>
               </div>
               <form
@@ -256,16 +258,17 @@ export default async function Home() {
                 </p>
               </div>
               <Button asChild size="lg">
-                <a
+                <TrackedWhatsAppLink
                   href={whatsappUrl(
                     "Hola, quiero conocer las ofertas disponibles de Lu An Bazar.",
                   )}
                   target="_blank"
                   rel="noreferrer"
+                  tracking={{ source: "home_offers" }}
                 >
                   <MessageCircle data-icon="inline-start" />
                   Ver ofertas
-                </a>
+                </TrackedWhatsAppLink>
               </Button>
             </div>
           </div>

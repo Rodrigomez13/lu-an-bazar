@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Menu, MessageCircle } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { ConsultationListTrigger } from "@/components/consultation-list";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { whatsappUrl } from "@/lib/business";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 const links = [
   ["Inicio", "/"],
@@ -44,17 +46,19 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <ConsultationListTrigger />
           <Button asChild className="hidden sm:inline-flex">
-            <a
+            <TrackedWhatsAppLink
               href={whatsappUrl(
                 "Hola, quiero consultar por los productos de Lu An Bazar.",
               )}
               target="_blank"
               rel="noreferrer"
+              tracking={{ source: "site_header" }}
             >
               <MessageCircle data-icon="inline-start" />
               Consultar
-            </a>
+            </TrackedWhatsAppLink>
           </Button>
           <Sheet>
             <SheetTrigger
@@ -87,15 +91,16 @@ export function SiteHeader() {
                   </Button>
                 ))}
                 <Button asChild className="mt-3">
-                  <a
+                  <TrackedWhatsAppLink
                     href={whatsappUrl(
                       "Hola, quiero consultar por los productos de Lu An Bazar.",
                     )}
                     target="_blank"
                     rel="noreferrer"
+                    tracking={{ source: "mobile_menu" }}
                   >
                     WhatsApp
-                  </a>
+                  </TrackedWhatsAppLink>
                 </Button>
               </nav>
             </SheetContent>

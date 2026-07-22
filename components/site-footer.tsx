@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { business, mapsUrl, whatsappUrl } from "@/lib/business";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 export function SiteFooter() {
   return (
@@ -40,15 +41,16 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col gap-3 text-sm">
           <p className="font-semibold text-primary">Estamos cerca</p>
-          <a
+          <TrackedWhatsAppLink
             className="flex items-center gap-2 hover:text-primary"
             href={mapsUrl}
             target="_blank"
             rel="noreferrer"
+            tracking={{ source: "site_footer_phone" }}
           >
             <MapPin className="size-4" />
             {business.address}
-          </a>
+          </TrackedWhatsAppLink>
           <p className="flex items-center gap-2">
             <Clock className="size-4" />
             Lun a sáb · 9 a 20 h
@@ -77,11 +79,15 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-brand-cream/10 px-5 py-5 text-center text-xs text-brand-cream/50">
         © 2026 Lu An Bazar ·{" "}
+        <Link href="/privacidad" className="hover:text-brand-cream">
+          Privacidad
+        </Link>{" "}
+        ·{" "}
         <Link href="/ingresar" className="hover:text-brand-cream">
           Acceso administrativo
         </Link>
       </div>
-      <a
+      <TrackedWhatsAppLink
         href={whatsappUrl(
           "Hola, quiero consultar por los productos de Lu An Bazar.",
         )}
@@ -89,6 +95,7 @@ export function SiteFooter() {
         rel="noreferrer"
         aria-label="Consultar por WhatsApp"
         className="fixed right-5 bottom-5 z-40 block size-16 rounded-full shadow-[0_12px_35px_rgba(37,211,102,.38)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+        tracking={{ source: "whatsapp_floating_button" }}
       >
         <Image
           src="/images/brand/logo-whatsapp.png"
@@ -97,7 +104,7 @@ export function SiteFooter() {
           height={64}
           className="size-16 object-contain"
         />
-      </a>
+      </TrackedWhatsAppLink>
     </footer>
   );
 }
